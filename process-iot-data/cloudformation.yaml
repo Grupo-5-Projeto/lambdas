@@ -1,0 +1,43 @@
+AWSTemplateFormatVersion: 2010-09-09
+Parameters:
+  S3BucketName:
+    Type: string
+    Default: "."
+  S3ArtifactZipName:
+    Type: string
+    Default: "."
+  DynamoTableName:
+    Type: string
+    Default: "SensorIotRawData""
+
+Resources:
+  LambdaProcessorDynamo:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: LambdaProcessorDynamo
+      Runtime: python3.9
+      Handler: handler.lambda_handler
+      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/LabRole
+      Timeout: 90
+      MemorySize: 502
+      Enviroment: 
+        Variables:
+          DYNAMO_TABLE_NAME: !Ref DynamoTableName
+          S3_BUCKET: !Ref S3BucketName
+      Code:
+        S3Bucket: !Ref S3BucketName
+        S3Key: !Ref S3ArtifactZipName
+
+  EventBridgeScheduler:
+    Type: AWS::Scheduler::Schedule
+    Properties:
+      FlexibleTimeWindow:
+        MaximumWindowInMinutes: 1
+        Mode: "FLEXIBLE"
+      Name: "SchedulerProcessIotData"
+      ScheduleExpression: "rate(5 minutes)"
+      ScheduleExpressionTimezone: America/Sao_Paulo
+      State: DISABLE
+      Target:
+        Arn: !GetAtt LambdaProcessorDynamo.Arn
+        RoleArn: !Sub arn:aws:iam::${AWS::AccountId}:role/LabRole
