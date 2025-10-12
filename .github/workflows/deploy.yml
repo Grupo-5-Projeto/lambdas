@@ -24,7 +24,8 @@ jobs:
 
       - name: zip code
         run: |
-          zip -r input-iot-data.zip input-iot-data/
+          cd input-iot-data
+          zip -r ../input-iot-data.zip .
 
       - name: upload artifact
         run: |
