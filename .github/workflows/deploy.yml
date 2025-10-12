@@ -33,5 +33,5 @@ jobs:
       - name: deploy
         run: |
           cd input-iot-data
-          aws cloudformation deploy --stack-name input-iot-stack --template-file input-iot-data/cloudformation.yaml
+          aws cloudformation deploy --stack-name input-iot-stack --template-file ./cloudformation.yaml
     
