@@ -1,14 +1,14 @@
 AWSTemplateFormatVersion: 2010-09-09
 Parameters:
   S3BucketName:
-    Type: string
-    Default: "."
+    Type: String
+    Default: raw-iot-final-data-edu-22
   S3ArtifactZipName:
-    Type: string
-    Default: "input.zip"
+    Type: String
+    Default: input.zip
   DynamoTableName:
-    Type: string
-    Default: "SensorIotRawData"
+    Type: String
+    Default: SensorIotRawData
 
 Resources:
   LambdaInputData:
