@@ -5,7 +5,7 @@ Parameters:
     Default: "."
   S3ArtifactZipName:
     Type: string
-    Default: "."
+    Default: "input.zip"
   DynamoTableName:
     Type: string
     Default: "SensorIotRawData""
@@ -72,5 +72,3 @@ Resources:
     Properties:
       RestApiId: !Ref RestApi
       StageName: prod
-
-
