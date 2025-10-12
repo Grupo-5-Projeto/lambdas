@@ -8,7 +8,7 @@ Parameters:
     Default: "input.zip"
   DynamoTableName:
     Type: string
-    Default: "SensorIotRawData""
+    Default: "SensorIotRawData"
 
 Resources:
   LambdaInputData:
