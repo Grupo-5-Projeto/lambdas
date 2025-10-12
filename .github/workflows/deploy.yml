@@ -5,11 +5,12 @@ on:
      - main
   workflow_call:
 
-jobs:
-  aws-credentials:
+jobs:      
+  deploy-input-iot:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - name: get credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -17,12 +18,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_ORG }}
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN_ORG }}
           aws-region: ${{ secrets.AWS_REGION_ORG }}
-          
-  deploy-input-iot:
-    runs-on: ubuntu-latest
-    needs: aws-credentials
-    steps:
-      - uses: actions/checkout@v4
+
       - name: zip code
         run: |
           zip -r input-iot-data.zip input-iot-data/
