@@ -24,7 +24,7 @@ Resources:
         Variables:
           DYNAMO_TABLE_NAME: !Ref DynamoTableName
       Code:
-        S3Bucket: !Ref S3BucketRaw
+        S3Bucket: !Ref S3BucketName
         S3Key: !Ref S3ArtifactZipName
   
   RestApi:
