@@ -28,6 +28,7 @@ jobs:
 
       - name: zip code
         run: |
+          ls
           cd input-iot-data
           zip -r ../input.zip .
 
