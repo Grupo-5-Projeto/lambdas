@@ -34,6 +34,4 @@ jobs:
         run: |
           cd input-iot-data
           aws cloudformation deploy --stack-name input-iot-stack --template-file ./cloudformation.yaml
-
-gerar object verson id para o cloudformation detectar mudança no objeto e atualizar o lambda
     
