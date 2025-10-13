@@ -16,24 +16,24 @@ jobs:
         with:
           ref: main
 
-      - name: get credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_ORG }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_ORG }}
-          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN_ORG }}
-          aws-region: ${{ secrets.AWS_REGION_ORG }}
+      # - name: get credentials
+      #   uses: aws-actions/configure-aws-credentials@v4
+      #   with:
+      #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_ORG }}
+      #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_ORG }}
+      #     aws-session-token: ${{ secrets.AWS_SESSION_TOKEN_ORG }}
+      #     aws-region: ${{ secrets.AWS_REGION_ORG }}
 
       - name: zip code
         run: |
-          ls
+          ls -la
 
-      - name: upload artifact
-        run: |
-          aws s3 cp input-iot-data.zip s3://${{env.ARTIFACT_BUCKET}}/artifacts/input.zip
+      # - name: upload artifact
+      #   run: |
+      #     aws s3 cp input-iot-data.zip s3://${{env.ARTIFACT_BUCKET}}/artifacts/input.zip
 
-      - name: deploy
-        run: |
-          cd input-iot-data
-          aws cloudformation deploy --stack-name input-iot-stack --template-file ./cloudformation.yaml
+      # - name: deploy
+      #   run: |
+      #     cd input-iot-data
+      #     aws cloudformation deploy --stack-name input-iot-stack --template-file ./cloudformation.yaml
     
