@@ -34,12 +34,11 @@ jobs:
 
       - name: upload artifact
         run: |
-          ls
+          cd lambdas/input-iot-data
           aws s3 cp input.zip s3://${{env.ARTIFACT_BUCKET}}/artifacts/input.zip
 
       - name: deploy
         run: |
-          ls
-          cd input-iot-data
+          cd lambdas/input-iot-data
           aws cloudformation deploy --stack-name input-iot-stack --template-file ./cloudformation.yaml
     
