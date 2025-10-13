@@ -29,7 +29,7 @@ jobs:
       - name: zip code
         run: |
           ls
-          cd input-iot-data
+          cd lambdas/input-iot-data
           zip -r ../input.zip .
 
       - name: upload artifact
