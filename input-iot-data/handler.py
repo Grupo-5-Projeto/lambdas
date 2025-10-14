@@ -14,7 +14,7 @@ def lambda_handler(event, context):
 
     try:
         if isinstance(event, str):
-            print("Parsing body string to dict")
+            print("Parsing body")
             data = json.loads(event)
         elif isinstance(event, dict):
             print("Body is already a dict")
