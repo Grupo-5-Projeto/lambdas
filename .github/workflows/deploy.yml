@@ -38,8 +38,20 @@ jobs:
           ls
           aws s3 cp input.zip s3://${{env.ARTIFACT_BUCKET}}/artifacts/input.zip
 
+      - name: get object version id
+        run: |
+          VERSION_ID=$(aws s3api head-object \
+          --bucket ${{env.ARTIFACT_BUCKET}} \
+          --key artifacts/input.zip \
+          --query VersionId \
+          --output text)
+          echo "VERSON_ID=$VERSION_ID" >> $GITHUB_ENV
+
       - name: deploy
         run: |
           cd lambdas/input-iot-data
-          aws cloudformation deploy --stack-name input-iot-stack --template-file ./cloudformation.yaml
+          aws cloudformation deploy \
+          --stack-name input-iot-stack \
+          --template-file ./cloudformation.yaml \
+          -parameter-overrides S3ObjectVersion=${{env.VERSION_ID}}
     

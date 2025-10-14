@@ -9,6 +9,9 @@ Parameters:
   DynamoTableName:
     Type: String
     Default: SensorIotRawData
+  LambdaObjectVersionID:
+    Type: String
+    Default: ""
 
 Resources:
   LambdaInputData:
@@ -26,6 +29,7 @@ Resources:
       Code:
         S3Bucket: !Ref S3BucketName
         S3Key: !Ref S3ArtifactZipName
+        S3ObjectVersion: !Ref LambdaObjectVersionID
   
   RestApi:
     Type: AWS::ApiGateway::RestApi
