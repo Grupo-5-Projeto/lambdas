@@ -23,7 +23,7 @@ Resources:
       Role: !Sub arn:aws:iam::${AWS::AccountId}:role/LabRole
       Timeout: 90
       MemorySize: 502
-      Enviroment: 
+      Environment: 
         Variables:
           DYNAMO_TABLE_NAME: !Ref DynamoTableName
           S3_BUCKET: !Ref S3BucketName
