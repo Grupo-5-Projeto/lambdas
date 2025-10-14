@@ -92,6 +92,10 @@ jobs:
           --query VersionId \
           --output text)
           echo "PROCESS_VERSION_ID=$PROCESS_VERSION_ID" >> $GITHUB_ENV
+      
+      - name: test
+        run: |
+          echo ${{env.PROCESS_VERSION_ID}}
 
       - name: deploy
         run: |
