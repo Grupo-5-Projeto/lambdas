@@ -5,7 +5,7 @@ Parameters:
     Default: raw-iot-final-data-edu-22
   S3ArtifactZipName:
     Type: String
-    Default: artifacts/input.zip
+    Default: artifacts/process.zip
   DynamoTableName:
     Type: String
     Default: SensorIotRawData
