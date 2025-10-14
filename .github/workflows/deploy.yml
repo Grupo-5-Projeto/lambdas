@@ -40,12 +40,12 @@ jobs:
 
       - name: get object version id
         run: |
-          VERSION_ID=$(aws s3api head-object \
+          INPUT_VERSION_ID=$(aws s3api head-object \
           --bucket ${{env.ARTIFACT_BUCKET}} \
           --key artifacts/input.zip \
           --query VersionId \
           --output text)
-          echo "VERSION_ID=$VERSION_ID" >> $GITHUB_ENV
+          echo "INPUT_VERSION_ID=$INPUT_VERSION_ID" >> $GITHUB_ENV
 
       - name: deploy
         run: |
@@ -53,5 +53,51 @@ jobs:
           aws cloudformation deploy \
           --stack-name input-iot-stack \
           --template-file ./cloudformation.yaml \
-          --parameter-overrides LambdaObjectVersionID=${{env.VERSION_ID}}
+          --parameter-overrides LambdaObjectVersionID=${{env.INPUT_VERSION_ID}}
+
+  deploy-processor-iot-data:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          repository: 'Grupo-5-Projeto/lambdas'
+          path: lambdas
+
+      - name: get credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_ORG }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_ORG }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN_ORG }}
+          aws-region: ${{ secrets.AWS_REGION_ORG }}
+
+      - name: zip code
+        run: |
+          ls
+          cd lambdas/process-iot-data
+          zip -r process.zip .
+
+      - name: upload artifact
+        run: |
+          cd lambdas/process-iot-data
+          ls
+          aws s3 cp process.zip s3://${{env.ARTIFACT_BUCKET}}/artifacts/process.zip
+
+      - name: get object version id
+        run: |
+          PROCESS_VERSION_ID=$(aws s3api head-object \
+          --bucket ${{env.ARTIFACT_BUCKET}} \
+          --key artifacts/process.zip \
+          --query VersionId \
+          --output text)
+          echo "PROCESS_VERSION_ID=$PROCESS_VERSION_ID" >> $GITHUB_ENV
+
+      - name: deploy
+        run: |
+          cd lambdas/process-iot-data
+          aws cloudformation deploy \
+          --stack-name process-iot-data-stack \
+          --template-file ./cloudformation.yaml \
+          --parameter-overrides LambdaObjectVersionID=${{env.PROCESS_VERSION_ID}}
     

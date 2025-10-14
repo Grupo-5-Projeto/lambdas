@@ -1,14 +1,17 @@
 AWSTemplateFormatVersion: 2010-09-09
 Parameters:
   S3BucketName:
-    Type: string
-    Default: "."
+    Type: String
+    Default: raw-iot-final-data-edu-22
   S3ArtifactZipName:
-    Type: string
-    Default: "."
+    Type: String
+    Default: artifacts/input.zip
   DynamoTableName:
     Type: string
-    Default: "SensorIotRawData""
+    Default: "SensorIotRawData"
+  LambdaObjectVersionID:
+    Type: String
+    Default: ""
 
 Resources:
   LambdaProcessorDynamo:
@@ -27,6 +30,7 @@ Resources:
       Code:
         S3Bucket: !Ref S3BucketName
         S3Key: !Ref S3ArtifactZipName
+        S3ObjectVersion: !Ref LambdaObjectVersionID
 
   EventBridgeScheduler:
     Type: AWS::Scheduler::Schedule
@@ -37,7 +41,7 @@ Resources:
       Name: "SchedulerProcessIotData"
       ScheduleExpression: "rate(5 minutes)"
       ScheduleExpressionTimezone: America/Sao_Paulo
-      State: DISABLE
+      State: ENABLED
       Target:
         Arn: !GetAtt LambdaProcessorDynamo.Arn
         RoleArn: !Sub arn:aws:iam::${AWS::AccountId}:role/LabRole
