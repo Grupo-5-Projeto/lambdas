@@ -34,8 +34,8 @@ jobs:
 
       - name: upload artifact
         run: |
-          ls
           cd lambdas/input-iot-data
+          ls
           aws s3 cp input.zip s3://${{env.ARTIFACT_BUCKET}}/artifacts/input.zip
 
       - name: deploy
