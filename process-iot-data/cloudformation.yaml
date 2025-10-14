@@ -7,7 +7,7 @@ Parameters:
     Type: String
     Default: artifacts/input.zip
   DynamoTableName:
-    Type: string
+    Type: String
     Default: SensorIotRawData
   LambdaObjectVersionID:
     Type: String
