@@ -45,7 +45,7 @@ jobs:
           --key artifacts/input.zip \
           --query VersionId \
           --output text)
-          echo "VERSON_ID=$VERSION_ID" >> $GITHUB_ENV
+          echo "VERSION_ID=$VERSION_ID" >> $GITHUB_ENV
 
       - name: deploy
         run: |
@@ -53,5 +53,5 @@ jobs:
           aws cloudformation deploy \
           --stack-name input-iot-stack \
           --template-file ./cloudformation.yaml \
-          -parameter-overrides S3ObjectVersion=${{env.VERSION_ID}}
+          --parameter-overrides S3ObjectVersion=${{env.VERSION_ID}}
     
