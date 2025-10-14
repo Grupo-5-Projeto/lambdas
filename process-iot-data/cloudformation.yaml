@@ -45,3 +45,4 @@ Resources:
       Target:
         Arn: !GetAtt LambdaProcessorDynamo.Arn
         RoleArn: !Sub arn:aws:iam::${AWS::AccountId}:role/LabRole
+
