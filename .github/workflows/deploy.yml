@@ -53,5 +53,5 @@ jobs:
           aws cloudformation deploy \
           --stack-name input-iot-stack \
           --template-file ./cloudformation.yaml \
-          --parameter-overrides S3ObjectVersion=${{env.VERSION_ID}}
+          --parameter-overrides LambdaObjectVersionID=${{env.VERSION_ID}}
     
