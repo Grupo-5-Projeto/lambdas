@@ -6,7 +6,7 @@ on:
   workflow_call:
 
 env:
-  ARTIFACT_BUCKET: "raw-iot-final-data-edu-22"
+  ARTIFACT_BUCKET: "raw-iot-final-data-edu-test"
 
 jobs:      
   deploy-input-iot:
