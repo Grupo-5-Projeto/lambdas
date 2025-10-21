@@ -5,9 +5,6 @@ on:
      - main
   workflow_call:
 
-env:
-  ARTIFACT_BUCKET: "raw-iot-final-data-edu-test"
-
 jobs:      
   deploy-input-iot:
     runs-on: ubuntu-latest
@@ -36,12 +33,12 @@ jobs:
         run: |
           cd lambdas/input-iot-data
           ls
-          aws s3 cp input.zip s3://${{env.ARTIFACT_BUCKET}}/artifacts/input.zip
+          aws s3 cp input.zip s3://${{ vars.BUCKET_RAW }}/artifacts/input.zip
 
       - name: get object version id
         run: |
           INPUT_VERSION_ID=$(aws s3api head-object \
-          --bucket ${{env.ARTIFACT_BUCKET}} \
+          --bucket ${{ vars.BUCKET_RAW }} \
           --key artifacts/input.zip \
           --query VersionId \
           --output text)
@@ -53,7 +50,7 @@ jobs:
           aws cloudformation deploy \
           --stack-name input-iot-stack \
           --template-file ./cloudformation.yaml \
-          --parameter-overrides LambdaObjectVersionID=${{env.INPUT_VERSION_ID}}
+          --parameter-overrides LambdaObjectVersionID=${{env.INPUT_VERSION_ID}} S3BucketName=${{vars.BUCKET_RAW}}
 
   deploy-processor-iot-data:
     runs-on: ubuntu-latest
@@ -74,7 +71,6 @@ jobs:
 
       - name: zip code
         run: |
-          ls
           cd lambdas/process-iot-data
           zip -r process.zip .
 
@@ -82,12 +78,12 @@ jobs:
         run: |
           cd lambdas/process-iot-data
           ls
-          aws s3 cp process.zip s3://${{env.ARTIFACT_BUCKET}}/artifacts/process.zip
+          aws s3 cp process.zip s3://${{ vars.BUCKET_RAW }}/artifacts/process.zip
 
       - name: get object version id
         run: |
           PROCESS_VERSION_ID=$(aws s3api head-object \
-          --bucket ${{env.ARTIFACT_BUCKET}} \
+          --bucket ${{ vars.BUCKET_RAW }} \
           --key artifacts/process.zip \
           --query VersionId \
           --output text)
@@ -103,5 +99,5 @@ jobs:
           aws cloudformation deploy \
           --stack-name process-iot-data-stack \
           --template-file ./cloudformation.yaml \
-          --parameter-overrides LambdaObjectVersionID=${{env.PROCESS_VERSION_ID}}
+          --parameter-overrides LambdaObjectVersionID=${{env.PROCESS_VERSION_ID}} S3BucketName=${{vars.BUCKET_RAW}}
     
